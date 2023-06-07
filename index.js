@@ -1,9 +1,19 @@
-const express = require('express')
+import express from "express" //ESM
+/* se le pone js por que no es un servicio instalado sino que yo lo cree */
+import servicesRoutes from './routes/servicesRoutes.js'
 
 //configurar la app
+const app = express()
 
-//definir una ruta
+//definir una ruta usamos .use porque queremos un middelware es un codigo que se ejecuta en todas las peticiones
+//ante cualquier peticion en /services ejecuta lo que hay en servicesRoutes
+app.use('/api/services', servicesRoutes)
 
 //definir un puerto
+//prcess.env seria una variable de nuestro hosting, ahora bien sin no hay toma el puerto 4000
+const PORT = process.env.PORT || 4000
 
 //arrancar la app
+app.listen(PORT, ()=>{
+    console.log(`El servidor se esta ejecutendo en el puerto: ${PORT} `)
+})
