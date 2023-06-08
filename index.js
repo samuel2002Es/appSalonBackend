@@ -1,9 +1,19 @@
 import express from "express" //ESM
 /* se le pone js por que no es un servicio instalado sino que yo lo cree */
 import servicesRoutes from './routes/servicesRoutes.js'
+import {db} from './config/db.js'
+
+//dotenv nos permite crear variables de entorno de forma sencilla
+import * as dotenv from 'dotenv'
+
+// Variables de entorno
+dotenv.config()
 
 //configurar la app
 const app = express()
+
+//conectar a DB
+db()
 
 //definir una ruta usamos .use porque queremos un middelware es un codigo que se ejecuta en todas las peticiones
 //ante cualquier peticion en /services ejecuta lo que hay en servicesRoutes
@@ -17,3 +27,5 @@ const PORT = process.env.PORT || 4000
 app.listen(PORT, ()=>{
     console.log(`El servidor se esta ejecutendo en el puerto: ${PORT} `)
 })
+console.log(process.env.MONGO_URI)
+console.log(process.env.USERS)
