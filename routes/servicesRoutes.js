@@ -1,16 +1,12 @@
 import express from 'express'
-/* como es un export con const podemos usar las llaves para hacer desestructuracion */
-import { services } from '../data/beautyServices.js'
+import { createService, getServices, getServicesById } from '../controllers/servicesController.js'
 
 const router = express.Router()
 
-router.get('/', (req,res)=>{
-/*     const product = {
-        id:1,
-        price:30,
-        name:'Laptop'
-    } */
-    res.json(services)
-})
+//no se le pone getServices() por que si se le ponen llama a la funcion y no espera a que ocurran los otros eventos
+router.get('/',getServices)
+router.post('/',createService)
+/* ruta dinamica con id */
+router.get('/:id',getServicesById)
 
 export default router

@@ -6,11 +6,16 @@ import {db} from './config/db.js'
 //dotenv nos permite crear variables de entorno de forma sencilla
 import * as dotenv from 'dotenv'
 
+import colors from 'colors'
+
 // Variables de entorno
 dotenv.config()
 
 //configurar la app
 const app = express()
+
+//leer datos via body. Express no contiene muchas cosas y tenemos que habilitarlas, cuando hacemos una peticion post y estamos enviando algo, necesitamos decirle que lo reciba 
+app.use(express.json())
 
 //conectar a DB
 db()
@@ -25,7 +30,5 @@ const PORT = process.env.PORT || 4000
 
 //arrancar la app
 app.listen(PORT, ()=>{
-    console.log(`El servidor se esta ejecutendo en el puerto: ${PORT} `)
+    console.log(colors.black.bgWhite.bold(`El servidor se esta ejecutendo en el puerto: ${PORT} `))
 })
-console.log(process.env.MONGO_URI)
-console.log(process.env.USERS)
