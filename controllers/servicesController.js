@@ -1,6 +1,4 @@
 /* como es un export con const podemos usar las llaves para hacer desestructuracion */
-import mongoose from 'mongoose'
-import { services } from '../data/beautyServices.js'
 import Services from '../models/Services.js'
 import { validateObjectId, handleNotFoundError } from '../utilis/index.js'
 
@@ -26,8 +24,13 @@ const createService = async (req,res)=>{
         console.log(error)
     }
 }
-const getServices =  (req,res)=>{
-    res.json(services)
+const getServices =  async(req,res)=>{
+    try {
+        const services = await Services.find()
+        res.json(services)
+    } catch (error) {
+        console.log(error)
+    }
 } 
 const getServicesById = async (req,res)=>{
     //de la siguiente forma obtenemos el id del usuario
