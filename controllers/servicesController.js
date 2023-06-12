@@ -1,6 +1,9 @@
 /* como es un export con const podemos usar las llaves para hacer desestructuracion */
+import mongoose from 'mongoose'
 import { services } from '../data/beautyServices.js'
 import Services from '../models/Services.js'
+import { validateObjectId, handleNotFoundError } from '../utilis/index.js'
+
 //req es lo que envias res es la repuesta que recibes
 const createService = async (req,res)=>{
     //object.values convierte el {} a un arreglo y verificamos que no este vacio con includes
@@ -25,13 +28,75 @@ const createService = async (req,res)=>{
 }
 const getServices =  (req,res)=>{
     res.json(services)
+} 
+const getServicesById = async (req,res)=>{
+    //de la siguiente forma obtenemos el id del usuario
+    //console.log(req.params) 
+    //utilizamos desestructuracion para obtener solo el valor id
+    const {id} = req.params
+    //validar un object id, lo ponemos dentro de un if porque en todo caso que retorne un error queremos parar la ejecucion
+    if (validateObjectId(id,res)) return
+    //validar que exista (no funcionaba porque traia el objeto completo, y solo necesitaba el id)
+    const service = await Services.findById(id).exec();
+    if (!service) {
+        return handleNotFoundError('El servicio no existe',res)
+    }
+
+    //mostrar el servicio
+    res.json(service)
 }
-const getServicesById = (req,res)=>{
-    console.log("Desde getServiceById")
+const updateService = async (req,res) => {
+    const {id} = req.params
+    //validar un object id, lo ponemos dentro de un if porque en todo caso que retorne un error queremos parar la ejecucion
+    if (validateObjectId(id,res)) return
+    //validar que exista (no funcionaba porque traia el objeto completo, y solo necesitaba el id)
+    const service = await Services.findById(id).exec();
+    if (!service) {
+        return handleNotFoundError('El servicio no existe',res)
+    }
+    //console.log(service)
+    //console.log(id)
+    //console.log(req.body)
+
+    //Escribimos en el objeto los valores nuevos
+    service.name = req.body.name || service.name
+    service.price = req.body.price || service.price
+
+    try {
+        await service.save()
+        res.json({
+            msg: 'El servicio se actualizo correctamente'
+        })
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+const deleteService = async (req, res) => {
+    const {id} = req.params
+    //validar un object id
+    if (validateObjectId(id,res)) return
+
+    //validar que exista
+    const service = await Services.findById(id).exec();
+    if (!service) {
+        return handleNotFoundError('El servicio no existe',res)
+    }
+
+    try {
+        await service.deleteOne()
+        res.json({
+            msg: 'El servicio se elimino correctamente'
+        })
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export{
     createService,
     getServices,
-    getServicesById
+    getServicesById,
+    updateService,
+    deleteService
 }

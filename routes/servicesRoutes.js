@@ -1,5 +1,5 @@
 import express from 'express'
-import { createService, getServices, getServicesById } from '../controllers/servicesController.js'
+import { createService, deleteService, getServices, getServicesById, updateService } from '../controllers/servicesController.js'
 
 const router = express.Router()
 
@@ -8,5 +8,6 @@ router.get('/',getServices)
 router.post('/',createService)
 /* ruta dinamica con id */
 router.get('/:id',getServicesById)
-
+router.put('/:id',updateService)
+router.delete('/:id',deleteService)
 export default router
