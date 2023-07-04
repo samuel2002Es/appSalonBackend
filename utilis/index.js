@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import jwt from 'jsonwebtoken'
 
 function validateObjectId(id,res){
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -19,8 +20,22 @@ function handleNotFoundError(message,res){
 
 //para generar un id unico
 const uniqueId = () => Date.now().toString(32) + Math.random().toString(32).substring(2)
+
+
+//generate jwt token
+const generateJWT = (id) => {
+    console.log("desde jwt",id)
+    //el firmar o sign toma tres datos: payload=datos en la firma, llave privada , duracion
+    //3d = tres dias
+    //1h = hora
+    const token = jwt.sign({ id },process.env.JWT_SECRET,{
+        expiresIn: '1h'
+    })
+    return token
+}
 export {
     validateObjectId,
     handleNotFoundError,
-    uniqueId
+    uniqueId,
+    generateJWT
 }
