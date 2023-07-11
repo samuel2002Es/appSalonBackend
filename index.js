@@ -2,6 +2,7 @@ import express from "express" //ESM
 /* se le pone js por que no es un servicio instalado sino que yo lo cree */
 import servicesRoutes from './routes/servicesRoutes.js'
 import authRoutes from './routes/authRoutes.js'
+import appointmentRoutes from './routes/appointmentRoutes.js'
 import {db} from './config/db.js'
 
 //dotenv nos permite crear variables de entorno de forma sencilla
@@ -47,6 +48,8 @@ app.use(cors(corsOptions))
 app.use('/api/services', servicesRoutes)
 
 app.use('/api/auth', authRoutes)
+
+app.use('/api/appointments', appointmentRoutes)
 //definir un puerto
 //prcess.env seria una variable de nuestro hosting, ahora bien sin no hay toma el puerto 4000
 const PORT = process.env.PORT || 4000

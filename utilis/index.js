@@ -24,7 +24,7 @@ const uniqueId = () => Date.now().toString(32) + Math.random().toString(32).subs
 
 //generate jwt token
 const generateJWT = (id) => {
-    console.log("desde jwt",id)
+    //console.log("desde jwt",id)
     //el firmar o sign toma tres datos: payload=datos en la firma, llave privada , duracion
     //3d = tres dias
     //1h = hora
